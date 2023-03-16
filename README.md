@@ -246,8 +246,140 @@ docker logs zuul-container
 ##### Step 4.3 -  Create a Dockerfile for shoes-microservice-spring-boot, build & run as a container 
 
 ```
+cd ..
+```
+```
 cd shoes-microservice-spring-boot
 ```
+- Create a Dockerfile based on the instructions. [shoes-microservice-spring-boot](https://github.com/sarat9/microservices-architect-config-starter/tree/main/shoes-microservice-spring-boot) 
+
+```
+FROM maven as build
+WORKDIR /app
+COPY . .
+RUN mvn install
+
+FROM openjdk:11.0.10-jre
+WORKDIR /app
+COPY --from=build /app/target/shoes-0.0.1-SNAPSHOT.jar /app
+EXPOSE 1002
+CMD ["java","-jar","shoes-0.0.1-SNAPSHOT.jar"]
+```
+ 
+- Build to create an image
+```
+docker build -t shoes . 
+```
+- Check the Images 
+```
+docker images
+```
+- Create a container from the image
+```
+docker run -d --name shoes-container -p 1002:1002 shoes
+```
+- Note - Open port 1002 in the Security Group inbound rules.
+- click (Shoes) - you will get a response like this {"tommy":"Tommy Hilfiger Shoe","adidas":"Adidas Running Shoe","nikeshoe":"Nike Sports Shoe"}
+
+![shoes](https://user-images.githubusercontent.com/121741348/225559559-b4005b49-ec70-4064-85d5-2861ed71d222.png)
+
+##### Step 4.4 -  Create a Dockerfile for offers-microservice-spring-boot, build & run as a container 
+```
+cd ..
+```
+```
+cd offers-microservice-spring-boot
+```
+- Create a Dockerfile based on the instructions. [offers-microservice-spring-boot](https://github.com/sarat9/microservices-architect-config-starter/tree/main/offers-microservice-spring-boot)  
+
+```
+FROM maven as build 
+WORKDIR /app
+COPY . .
+RUN mvn install 
+
+FROM openjdk:11.0.10-jre
+WORKDIR /app
+COPY --from=build /app/target/offers-0.0.1-SNAPSHOT.jar /app
+EXPOSE 1001
+CMD ["java","-jar","offers-0.0.1-SNAPSHOT.jar"]
+```
+- Build to create an image
+```
+docker build -t offers . 
+```
+- Check the Images 
+```
+docker images
+```
+- Create a container from the image
+```
+docker run -d --name offers-container -p 1001:1001 offers
+```
+- Note - Open port 1001 in the Security Group inbound rules.
 
 
+##### Step 4.5 -  Create a Dockerfile for cart-microservice-nodejs, build & run as a container
+```
+cd ..
+```
+```
+cd cart-microservice-nodejs
+```
+- Create a Dockerfile based on the instructions.  [cart-microservice-nodejs](https://github.com/sarat9/microservices-architect-config-starter/tree/main/cart-microservice-nodejs)
 
+- Note - It depends on the version if u go with latest version it might not work as expected 
+```
+FROM node:14
+WORKDIR /app 
+COPY . .
+RUN npm install
+EXPOSE 1004
+CMD ["node","index.js"]
+```
+
+- Build to create an image
+```
+docker build -t cart . 
+```
+- Check the Images 
+```
+docker images
+```
+- Create a container from the image
+```
+docker run -d --name cart-container -p 1001:1001 cart
+```
+- Note - Open port 1004 in the Security Group inbound rules.
+
+##### Step 4.6-  Create a Dockerfile for wishlist-microservice-python, build & run as a container
+```
+cd ..
+```
+```
+cd wishlist-microservice-python
+```
+
+- Create a Dockerfile based on the instructions -   [wishlist-microservice-python](https://github.com/sarat9/microservices-architect-config-starter/tree/main/wishlist-microservice-python) 
+
+```
+FROM python:3
+COPY . .
+RUN pip install flask flask_cors
+EXPOSE 1003
+CMD ["python","index.py"]
+```
+
+- Build to create an image
+```
+docker build -t wishlist . 
+```
+- Check the Images 
+```
+docker images
+```
+- Create a container from the image
+```
+docker run -d --name wishlist-container -p 1001:1001 wishlist
+```
+- Note - Open port 1003 in the Security Group inbound rules.
