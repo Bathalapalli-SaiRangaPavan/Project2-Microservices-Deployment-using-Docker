@@ -45,16 +45,16 @@ Thank you for your hard work and dedication to this project.
 ```
     offer:
       path: /offer/**
-      url: http://44.199.250.205:1001/api/v1
+      url: http://100.25.193.105:1001/api/v1
     shoe:
       path: /shoe/**
-      url: http://44.199.250.205:1002/api/v1
+      url: http://100.25.193.105:1002/api/v1
     wishlist:
       path: /wishlist/**
-      url: http://44.199.250.205:1003
+      url: http://100.25.193.105:1003
     cart:
       path: /cart/**
-      url: http://44.199.250.205:1004/api/v1
+      url: http://100.25.193.105:1004/api/v1
 ```
 
 
@@ -76,7 +76,8 @@ Thank you for your hard work and dedication to this project.
 - Step 1 - Create an instance named Build-Server and login to the Build-Server. Install Git & Docker.
 - Step 2 - Update your Build-Server public ip in ui-web-app-reactjs, zuul-api-gateway in GitHub 
 - Step 3 - Clone the Microservices-Deployment repository.
-
+- Step 4 - Create a Dockerfile for each microservice, build the Dockerfile, and run it as a container.
+- Step 5 - Push images to Docker Hub
 #### Step 1 - Create an instance named Build-Server and login to the Build-Server. Install Git & Docker.
 
 - Become root user
@@ -162,8 +163,8 @@ ls
 ```
 ![g](https://user-images.githubusercontent.com/121741348/225528546-5cf8c414-6fe0-4f15-b8ad-5f1917e506ce.png)
 
-#### Step 4 - Create a Dockerfile for each microservice.
-##### Step 4.1 - Create a Dockerfile for ui-web-app-reactjs, build & run as a container 
+#### Step 4 - Create a Dockerfile for each microservice, build the Dockerfile, and run it as a container
+##### Step 4.1 - Create a Dockerfile for ui-web-app-reactjs, build the Dockerfile, and run it as a container
 ```
 cd ui-web-app-reactjs
 ```
@@ -203,7 +204,7 @@ docker ps
 
 ##### Whenever you click on shoes, offers, cart, or wishlist, you are not able to access the particular microservices. 
 
-##### Step 4.2 -  Create a Dockerfile for zuul-api-gateway, build & run as a container 
+##### Step 4.2 -  Create a Dockerfile for zuul-api-gateway, build the Dockerfile, and run it as a container 
 
 
 ```
@@ -245,7 +246,7 @@ docker logs zuul-container
 
 - Note - Open port 9999 in the Security Group inbound rules.
 
-##### Step 4.3 -  Create a Dockerfile for shoes-microservice-spring-boot, build & run as a container 
+##### Step 4.3 -  Create a Dockerfile for shoes-microservice-spring-boot, build the Dockerfile, and run it as a container 
 
 ```
 cd ..
@@ -286,7 +287,7 @@ docker run -d --name shoes-container -p 1002:1002 shoes
 ###### Access Shoes Service
 ![sh](https://user-images.githubusercontent.com/121741348/225594371-b0f49905-d619-47a7-a14e-0ff471759c22.png)
 
-##### Step 4.4 -  Create a Dockerfile for offers-microservice-spring-boot, build & run as a container 
+##### Step 4.4 -  Create a Dockerfile for offers-microservice-spring-boot, build the Dockerfile, and run it as a container
 ```
 cd ..
 ```
@@ -324,7 +325,7 @@ docker run -d --name offers-container -p 1001:1001 offers
 ###### Access Offer Service 
 ![o](https://user-images.githubusercontent.com/121741348/225592437-12e3063b-bcf8-4a8f-b9f1-c02177e96bf2.png)
 
-##### Step 4.5 -  Create a Dockerfile for cart-microservice-nodejs, build & run as a container
+##### Step 4.5 -  Create a Dockerfile for cart-microservice-nodejs, build the Dockerfile, and run it as a container
 ```
 cd ..
 ```
@@ -412,3 +413,80 @@ git push origin main
 
 - Give Github Credentials
 - Check in Github can able to see Dockerfile
+
+#### Step 5 - Push images to Docker Hub
+
+###### PreRequiste - You need to have Docker Hub account 
+
+
+```
+docker login 
+```
+###### Give your Dockerhub Username & Password
+###### Once you login Create a Repository in DockerHub 
+
+- Create a repository named ui
+
+```
+docker tag ui bsairangapavan/ui:v1
+```
+```
+docker push bsairangapavan/ui:v1
+```
+###### You can able to see like below 
+![viui](https://user-images.githubusercontent.com/121741348/225616962-cccc0b5f-7353-4577-bf52-6386a0238e62.png)
+
+- Create a repository named zuul 
+```
+docker tag zuul  bsairangapavan/zuul:v1
+```
+```
+docker push bsairangapavan/zuul:v1
+```
+###### You can able to see like below 
+![zuul](https://user-images.githubusercontent.com/121741348/225617583-f70ae645-7423-479f-898b-f101a80f1d5a.png)
+
+- Create a repository named shoes
+```
+docker tag shoes bsairangapavan/shoes:v1
+```
+```
+docker push bsairangapavan/shoes:v1
+```
+###### You can able to see like below 
+![shoes1](https://user-images.githubusercontent.com/121741348/225618003-372ded62-233a-4da0-aeb2-d07a3df3c5f6.png)
+
+- Create a repository named offers
+
+```
+docker tag offers bsairangapavan/offers:v1
+```
+```
+docker push bsairangapavan/offers:v1
+```
+###### You can able to see like below 
+![offer](https://user-images.githubusercontent.com/121741348/225618486-6a407c0e-ccb2-4e48-bdd5-fa82528d9f39.png)
+
+- Create a repository named cart
+
+```
+docker tag cart bsairangapavan/cart:v1
+```
+```
+docker push bsairangapavan/cart:v1
+```
+###### You can able to see like below 
+![d](https://user-images.githubusercontent.com/121741348/225618932-536692e4-d116-4437-8632-e616f712bacc.png)
+
+- Create a repository named wishlist 
+```
+docker tag cart bsairangapavan/wishlist:v1
+```
+```
+docker push bsairangapavan/wishlist:v1
+```
+###### You can able to see like below 
+
+
+![wis](https://user-images.githubusercontent.com/121741348/225619435-6b4cbb74-3ae6-4361-b5f6-cdc3a468078a.png)
+
