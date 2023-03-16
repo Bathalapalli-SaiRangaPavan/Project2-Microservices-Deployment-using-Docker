@@ -162,5 +162,92 @@ ls
 ```
 ![g](https://user-images.githubusercontent.com/121741348/225528546-5cf8c414-6fe0-4f15-b8ad-5f1917e506ce.png)
 
+#### Step 4 - Create a Dockerfile for each microservice.
+##### Step 4.1 - Create a Dockerfile for ui-web-app-reactjs, build & run as a container 
+```
+cd ui-web-app-reactjs
+```
+
+- Create a Dockerfile based on the instructions. [ui-web-app-reactjs](https://github.com/sarat9/microservices-architect-config-starter/tree/main/ui-web-app-reactjs)
+
+```
+FROM node:8 
+WORKDIR /app          
+COPY . . 
+RUN npm install 
+EXPOSE 8080 
+CMD ["npm","start"]
+```
+- Build to create an image
+```
+docker build -t ui .
+```
+- Check the Images 
+```
+docker images
+```
+- Create a container from the image.
+```
+docker run -d --name ui-container -p 8080:8080 ui
+```
+- Check the process status
+```
+docker ps
+```
+- Note - Open port 8080 in the Security Group inbound rules.
+
+- Browse - http://yourdockerip:8080/       
+##### Access Front End 
+![ui](https://user-images.githubusercontent.com/121741348/225551518-e37d7c7f-0e72-4dbf-b836-9d1213fe4334.png)
+
+##### Whenever you click on shoes, offers, cart, or wishlist, you are not able to access the particular microservices. 
+
+##### Step 4.2 -  Create a Dockerfile for zuul-api-gateway, build & run as a container 
+
+
+```
+cd zuul-api-gateway
+```
+-  Create a Dockerfile based on the instructions. [zuul-api-gateway](https://github.com/sarat9/microservices-architect-config-starter/tree/main/zuul-api-gateway)
+```
+# multi stage build 
+FROM maven as build
+WORKDIR /app
+COPY . .
+RUN mvn clean install
+
+FROM openjdk:11.0.10-jre
+WORKDIR /app
+COPY --from=build /app/target/zuul-0.0.1-SNAPSHOT.jar .
+EXPOSE 9999
+CMD ["java","-jar","zuul-0.0.1-SNAPSHOT.jar"]
+```
+- Note - If you go for multistage, you can reduce the image size.
+
+- Build to create an image
+```
+docker build -t zuul . 
+```
+- Check the Images 
+```
+docker images
+```
+- Create a container from the image
+```
+docker run -d --name zuul-container -p 9999:9999 zuul
+```
+##### To see zuul-api-gateway is working as expected 
+```
+docker logs zuul-container
+```
+- It Started in 8.83 seconds
+
+
+##### Step 4.3 -  Create a Dockerfile for shoes-microservice-spring-boot, build & run as a container 
+
+```
+cd shoes-microservice-spring-boot
+```
+
 
 
