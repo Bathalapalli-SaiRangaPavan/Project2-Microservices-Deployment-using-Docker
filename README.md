@@ -45,16 +45,16 @@ Thank you for your hard work and dedication to this project.
 ```
     offer:
       path: /offer/**
-      url: http://3.237.197.155:1001/api/v1
+      url: http://44.199.250.205:1001/api/v1
     shoe:
       path: /shoe/**
-      url: http://3.237.197.155:1002/api/v1
+      url: http://44.199.250.205:1002/api/v1
     wishlist:
       path: /wishlist/**
-      url: http://3.237.197.155:1003
+      url: http://44.199.250.205:1003
     cart:
       path: /cart/**
-      url: http://3.237.197.155:1004/api/v1
+      url: http://44.199.250.205:1004/api/v1
 ```
 
 
@@ -112,7 +112,7 @@ docker info
 
 
 ```
-const url = 'http://3.237.197.155:9999/'+e.target.name;   # http://give your Build-Serverip:9999/
+const url = 'http://100.25.193.105:9999/'+e.target.name;   # http://give your Build-Serverip:9999/
 ```
 
 ###### zuul-api-gateway
@@ -130,16 +130,16 @@ zuul:
   routes:
     offer:
       path: /offer/**
-      url: http://3.237.197.155:1001/api/v1   # http://your Build-Serverip:1001/api/v1
+      url: http://100.25.193.105:1001/api/v1   # http://your Build-Serverip:1001/api/v1
     shoe:
       path: /shoe/**
-      url: http://3.237.197.155:1002/api/v1   # http://your Build-Serverip:1001/ap2/v1
+      url: http://100.25.193.105:1002/api/v1   # http://your Build-Serverip:1001/ap2/v1
     wishlist:
       path: /wishlist/**
-      url: http://3.237.197.155:1003          # http://your Build-Server ip:1003
+      url: http://100.25.193.105:1003          # http://your Build-Server ip:1003
     cart:
       path: /cart/**
-      url: http://3.237.197.155:1004/api/v1    # http://your Build-Server ip:1004/api/v1
+      url: http://100.25.193.105:1004/api/v1    # http://your Build-Server ip:1004/api/v1
 ```
 
 #### Points to Remember 
@@ -198,7 +198,8 @@ docker ps
 
 - Browse - http://yourdockerip:8080/       
 ##### Access Front End 
-![ui](https://user-images.githubusercontent.com/121741348/225551518-e37d7c7f-0e72-4dbf-b836-9d1213fe4334.png)
+
+![rr](https://user-images.githubusercontent.com/121741348/225595769-fce9b60c-69b5-4240-8582-58b7d7b97986.png)
 
 ##### Whenever you click on shoes, offers, cart, or wishlist, you are not able to access the particular microservices. 
 
@@ -242,6 +243,7 @@ docker logs zuul-container
 ```
 - It Started in 8.83 seconds
 
+- Note - Open port 9999 in the Security Group inbound rules.
 
 ##### Step 4.3 -  Create a Dockerfile for shoes-microservice-spring-boot, build & run as a container 
 
@@ -279,9 +281,10 @@ docker images
 docker run -d --name shoes-container -p 1002:1002 shoes
 ```
 - Note - Open port 1002 in the Security Group inbound rules.
-- click (Shoes) - you will get a response like this {"tommy":"Tommy Hilfiger Shoe","adidas":"Adidas Running Shoe","nikeshoe":"Nike Sports Shoe"}
+- Click (Shoes) - Will get a response like this {"tommy":"Tommy Hilfiger Shoe","adidas":"Adidas Running Shoe","nikeshoe":"Nike Sports Shoe"}
 
-![shoes](https://user-images.githubusercontent.com/121741348/225559559-b4005b49-ec70-4064-85d5-2861ed71d222.png)
+###### Access Shoes Service
+![sh](https://user-images.githubusercontent.com/121741348/225594371-b0f49905-d619-47a7-a14e-0ff471759c22.png)
 
 ##### Step 4.4 -  Create a Dockerfile for offers-microservice-spring-boot, build & run as a container 
 ```
@@ -317,7 +320,9 @@ docker images
 docker run -d --name offers-container -p 1001:1001 offers
 ```
 - Note - Open port 1001 in the Security Group inbound rules.
-
+- Click  (Offers) - will get a response like this {"samsung":"Samsung 10% Discount","adidas":"Adidas Shoe 70% Off","nikeshoe":"Nike Sports Shoe 50% off"}
+###### Access Offer Service 
+![o](https://user-images.githubusercontent.com/121741348/225592437-12e3063b-bcf8-4a8f-b9f1-c02177e96bf2.png)
 
 ##### Step 4.5 -  Create a Dockerfile for cart-microservice-nodejs, build & run as a container
 ```
@@ -352,6 +357,11 @@ docker run -d --name cart-container -p 1001:1001 cart
 ```
 - Note - Open port 1004 in the Security Group inbound rules.
 
+-  Click (Cart) - will get a response like this {"data":[{"itemNo":1,"item":"Nike Shoe"},{"itemNo":2,"item":"Tommy Hilfiger Shirt"},{"itemNo":3,"item":"Calvin Klien Trousers"}]}
+
+###### Access Cart Service 
+![c](https://user-images.githubusercontent.com/121741348/225591779-5017e7ec-b3e5-4ea2-a10f-559d1b01434d.png)
+
 ##### Step 4.6-  Create a Dockerfile for wishlist-microservice-python, build & run as a container
 ```
 cd ..
@@ -380,6 +390,25 @@ docker images
 ```
 - Create a container from the image
 ```
-docker run -d --name wishlist-container -p 1001:1001 wishlist
+docker run -d --name wish-container -p 1003:5000 wishlist
 ```
 - Note - Open port 1003 in the Security Group inbound rules.
+- Click (Wishlist) - Will get a response like this {"1": "Apple Iphone", "2": "MacBook", "3": "Your Fav Something else"}
+###### Access Wishlist Service 
+![wi](https://user-images.githubusercontent.com/121741348/225591435-f5f8a8fa-ffb8-414c-ad6a-6d148b469bd1.png)
+
+```
+git status 
+```
+```
+git add .
+```
+```
+git commit -m "created Dockerfile for microservices"
+```
+```
+git push origin main
+```
+
+- Give Github Credentials
+- Check in Github can able to see Dockerfile
